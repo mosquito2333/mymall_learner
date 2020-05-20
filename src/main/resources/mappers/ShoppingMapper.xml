@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mymall.dao.ShippingMapper" >
-  <resultMap id="BaseResultMap" type="com.mymall.pojo.Shipping" >
+<mapper namespace="com.mymall.dao.ShoppingMapper" >
+  <resultMap id="BaseResultMap" type="com.mymall.pojo.Shopping" >
     <constructor >
       <idArg column="shoppingid" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -31,7 +31,7 @@
     delete from mymall_shopping
     where shoppingid = #{shoppingid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mymall.pojo.Shipping" >
+  <insert id="insert" parameterType="com.mymall.pojo.Shopping" useGeneratedKeys="true" keyProperty="shoppingid">
     insert into mymall_shopping (shoppingid, user_id, receiver_name, 
       receiver_phone, receiver_mobile, receiver_province, 
       receiver_city, receiver_district, receiver_address, 
@@ -43,7 +43,7 @@
       #{receiverZip,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mymall.pojo.Shipping" >
+  <insert id="insertSelective" parameterType="com.mymall.pojo.Shopping" >
     insert into mymall_shopping
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="shoppingid != null" >
@@ -122,7 +122,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mymall.pojo.Shipping" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.mymall.pojo.Shopping" >
     update mymall_shopping
     <set >
       <if test="userId != null" >
@@ -161,7 +161,7 @@
     </set>
     where shoppingid = #{shoppingid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mymall.pojo.Shipping" >
+  <update id="updateByPrimaryKey" parameterType="com.mymall.pojo.Shopping" >
     update mymall_shopping
     set user_id = #{userId,jdbcType=INTEGER},
       receiver_name = #{receiverName,jdbcType=VARCHAR},
@@ -176,4 +176,42 @@
       update_time = now()
     where shoppingid = #{shoppingid,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByShoppingIdUserId" parameterType="map">
+    delete from mymall_shopping
+    where shoppingid=#{shoppingId}
+    and userid=#{userId}
+  </delete>
+
+  <update id="updateByShipping" parameterType="com.mymall.pojo.Shopping">
+    update mymall_shopping
+    set
+      receiver_naame=#{receiverName,jdbcType=VARCHAR},
+      receiver_phone=#{receiverPhone,jdbcType=VARCHAR},
+      receiver_mobile=#{receiverMobile,jdbcType=VARCHAR},
+      receiver_province=#{receiverProvince,jdbcType=VARCHAR},
+      receiver_city=#{receiverCity,jdbcType=VARCHAR},
+      receiver_district=#{receiverDistrict,jdbcType=VARCHAR},
+      receiver_address=#{receiverAddress,jdbcType=VARCHAR},
+      receiver_zip=#{receiverZip,jdbcType=VARCHAR},
+      create_time=now(),
+      update_time=now()
+      where shoppingid=#{shoppingId}
+      and user_id=#{userId}
+  </update>
+
+  <select id="selectByShoppingIdUserId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"></include>
+    from mymall_shopping
+    where shoppingid=#{shoppingId}
+    and user_id=#{userId}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"></include>
+    from mymll_shopping
+    where user_id=#{userId}
+  </select>
 </mapper>

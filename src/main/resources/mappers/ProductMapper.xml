@@ -176,4 +176,42 @@
       update_time = now()
     where prodid = #{prodid,jdbcType=INTEGER}
   </update>
+
+  <select id="selectList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from mymall_product
+      order by prodid asc;
+  </select>
+
+  <select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
+      select
+      <include refid="Base_Column_List"/>
+      from mymall_product
+      <where>
+        <if test="productName!=null">
+          and prodname like #{productName}
+        </if>
+        <if test="productId!=null">
+          and prodid=#{productId}
+        </if>
+      </where>
+
+  </select>
+
+  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+     select
+    <include refid="Base_Column_List"/>
+        from mymall_product
+        where prodstatus=1
+        <if test="productName!=null">
+            and prodname like #{productName}
+        </if>
+        <if test="categoryIdList!=null">
+            and cateid in
+            <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIdList">
+                #{item}
+            </foreach>
+        </if>
+  </select>
 </mapper>

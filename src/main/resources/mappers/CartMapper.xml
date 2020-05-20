@@ -115,4 +115,54 @@
       update_time = now()
     where cartid = #{cartid,jdbcType=INTEGER}
   </update>
+
+  <select id="selectCartByUserIdProductId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"></include>
+    from mymall_cart
+    where userid=#{userId}
+    and prodid=#{productId}
+  </select>
+
+  <select id="selectCartByUserId" resultMap="BaseResultMap" parameterType="integer">
+    select
+    <include refid="Base_Column_List"></include>
+    from mymall_cart
+    where userid=#{userId}
+  </select>
+
+  <select id="selectCartProductCheckedStatusByUserId" resultType="int" parameterType="integer">
+    select count(1)
+    from mymall_cart
+    where checked=0
+    and userid=#{userId}
+  </select>
+
+  <delete id="deleteByUserIdProductsIds" parameterType="map">
+      delete
+      from mymall_cart
+      where userid=#{userId}
+      <if test="productIdList!=null">
+         and prodid in
+         <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+         </foreach>
+      </if>
+  </delete>
+
+  <update id="checkedOrUncheckedProduct" parameterType="map">
+    update mymall_cart
+    set checked=#{checked}
+    and update_time=now()
+    where userid=#{userId}
+    <if test="productId!=null">
+      and prodid=#{productId}
+    </if>
+  </update>
+  <select id="getCartProductCount" parameterType="int" resultType="int">
+    select ifnull(sum(quantity),0) as count
+    from mymall_cart
+    where userid=#{userId}
+  </select>
+
 </mapper>

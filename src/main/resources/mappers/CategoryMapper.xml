@@ -115,4 +115,11 @@
       update_time = now()
     where cateid = #{cateid,jdbcType=INTEGER}
   </update>
+
+  <select id="selectChildrenParallel" parameterType="int" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from mymall_category
+      where parentid=#{parentId}
+  </select>
 </mapper>

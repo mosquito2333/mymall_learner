@@ -98,10 +98,10 @@
         #{role,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        now(),
+        create_time=now(),
       </if>
       <if test="updateTime != null" >
-        now(),
+        update_time=now(),
       </if>
     </trim>
   </insert>
@@ -133,7 +133,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        update_time = now(),
       </if>
     </set>
     where userid = #{userid,jdbcType=INTEGER}
@@ -148,17 +148,16 @@
       answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      now()
+      update_time = now()
     where userid = #{userid,jdbcType=INTEGER}
   </update>
 
-  <select id="checkUsername" resultType="int" parameterType="String">
+  <select id="checkUsername" resultType="int" parameterType="string">
       select count(1) from mymall_user
       where username=#{username}
-
   </select>
 
-  <select id="checkEmail" resultType="int" parameterType="String">
+  <select id="checkEmail" resultType="int" parameterType="string">
       select count(1) from mymall_user
       where email=#{email}
 
@@ -194,8 +193,7 @@
   </update>
 
   <select id="checkPassword" resultType="int" parameterType="map">
-    SELECT
-    count(1)
+    select count(1)
     from mymall_user
     where password = #{password}
     and userid = #{userid}

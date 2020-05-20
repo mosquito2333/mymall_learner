@@ -35,7 +35,6 @@ public class UserServiceImpl implements IUserService {
         if(user==null){
             return ServerResponse.creatByErrorMessage("密码错误");
         }
-
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.creatBySuccess("登陆成功",user);
     }
@@ -191,7 +190,6 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-
     //backend
 
     /**
@@ -205,5 +203,4 @@ public class UserServiceImpl implements IUserService {
         }
         return ServerResponse.creatByError();
     }
-
 }
